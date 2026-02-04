@@ -5,7 +5,7 @@ const gif = document.querySelector('.gif');
 
 yesBtn.addEventListener('click', () => {
     question.textContent = 'Yayy! See you on the 14th!';
-    gif.src = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2R0cTNpbm1iZGNsM3J3bHM4M3RiaGI4d3Z0cW92dG1tY2l1N3JpbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/11W0mn3Qc2k1Gg/giphy.gif';
+    gif.src = 'img/cute love1.webp';
     noBtn.style.display = 'none';
     yesBtn.style.display = 'none';
 });
@@ -20,3 +20,24 @@ noBtn.addEventListener('mouseover', () => {
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
 });
+
+const heartsContainer = document.querySelector('.hearts-container');
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+
+    const duration = Math.random() * 2 + 8; // Duration between 8s and 10s
+
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = duration + 's';
+
+    heartsContainer.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, duration * 1000);
+}
+
+setInterval(createHeart, 300);
+
