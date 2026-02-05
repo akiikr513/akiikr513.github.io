@@ -1,3 +1,4 @@
+/* Clean, single-version CSS for the Valentine page */
 body {
     display: flex;
     justify-content: center;
@@ -5,10 +6,12 @@ body {
     height: 100vh;
     background-color: #fce4ec;
     font-family: 'Arial', sans-serif;
+    overflow: hidden;
 }
 
 .container {
     text-align: center;
+    z-index: 4; /* ensures content sits above the heart-shape pseudo elements */
 }
 
 .question {
@@ -18,6 +21,14 @@ body {
 
 .gif {
     height: 200px;
+}
+
+.center-image {
+    /* ensure central image remains inside the heart and scales nicely */
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .buttons {
@@ -34,65 +45,44 @@ body {
     transition: all 0.3s ease;
 }
 
-.yes-btn {
-    background-color: #4CAF50;
-    color: white;
-}
+.yes-btn { background-color: #4CAF50; color: white; }
+.no-btn  { background-color: #f44336; color: white; position: fixed; z-index: 10; }
 
-.no-btn {
-    background-color: #f44336;
-    color: white;
-    position: absolute;
-}
+.hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
 
-.hearts-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-}
+.heart { position: absolute; bottom: -50px; width: 30px; height: 30px; background-color: #e91e63; opacity: 0.6; animation: bubble 10s linear infinite; }
+.heart::before, .heart::after { content: ''; position: absolute; width: 30px; height: 30px; background-color: #e91e63; border-radius: 50%; }
+.heart::before { top: -15px; left: 0; }
+.heart::after  { top: 0; left: -15px; }
 
-.heart {
-    position: absolute;
-    bottom: -50px;
-    width: 30px;
-    height: 30px;
-    background-color: #e91e63;
-    opacity: 0.6;
-    animation: bubble 10s linear infinite;
-}
+@keyframes bubble { 0% { transform: translateY(0) rotate(45deg); opacity: 0.6; } 50% { opacity: 0.6; } 100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; } }
 
-.heart::before,
-.heart::after {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #e91e63;
-    border-radius: 50%;
-}
+.heart-main { position: relative; width: 420px; height: 420px; display: flex; justify-content: center; align-items: center; z-index: 5; pointer-events: none; }
+/* default: heart decoration hidden until shown by adding .heart-visible */
+.heart-main::before, .heart-main::after { content: ''; position: absolute; top: 100px; width: 220px; height: 320px; background: rgba(255,255,255,0); border-radius: 100px 100px 0 0; box-shadow: none; opacity: 0; transition: all 600ms cubic-bezier(.2,.8,.2,1); }
 
-.heart::before {
-    top: -15px;
-    left: 0;
-}
+/* before: left-half rotated -45deg; after: right-half rotated 45deg */
+.heart-main::before { left: 210px; transform-origin: 0 100%; transform: scale(0.6) rotate(-45deg); z-index: 1; }
+.heart-main::after  { left: -10px; transform-origin: 100% 100%; transform: scale(0.6) rotate(45deg); z-index: 1; }
 
-.heart::after {
-    top: 0;
-    left: -15px;
-}
+.heart-main.heart-visible::before { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); opacity: 1; transform: scale(1.5) rotate(-45deg); }
+.heart-main.heart-visible::after  { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); opacity: 1; transform: scale(1.5) rotate(45deg); }
+.heart-main > .container { position: relative; z-index: 2; pointer-events: auto; }
 
-@keyframes bubble {
-    0% {
-        transform: translateY(0) rotate(45deg);
-        opacity: 0.6;
-    }
-    100% {
-        transform: translateY(-100vh) rotate(45deg);
-        opacity: 0;
-    }
-}
+/* Gallery Styles */
+.gallery-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; align-items: center; justify-content: center; overflow: hidden; }
+.rhombus-gallery  { display: flex; width: max-content; animation: scroll var(--scroll-duration, 60s) linear infinite; align-items: center; position: absolute; left: 0; }
+/* place rows vertically: first row near top, second row lower */
+.rhombus-gallery { top: calc(20% - 100px); left: 0; }
+/* lower row shifted horizontally by half an item (item width + horizontal margin) to interlock */
+.rhombus-gallery.row2 { top: calc(60% - 250px); left: calc((500px + 10px) / 2); }
 
+.rhombus { width: 500px; height: 500px; margin: 5px 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); overflow: hidden; transform-origin: center; transform: translateY(0); }
+.rhombus img { width: 100%; height: 100%; object-fit: cover; transform: rotate(-45deg) scale(1.45); }
+
+/* top row sits slightly above, bottom row slightly below so each top rhombus sits over two below */
+.rhombus-gallery > .rhombus { transform: translateY(-60px); }
+.rhombus-gallery.row2 > .rhombus { transform: translateY(60px); }
+
+/* Duplicate content approach: animate leftwards by half the total width (works when items are duplicated) */
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
