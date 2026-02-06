@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <audio id="bgMusic" autoplay loop style="display: none">
+      <source src="Song/ily (i love you baby).mp3" type="audio/mpeg" />
+    </audio>
+    <script>
+      const audio = document.getElementById("bgMusic");
+      audio.volume = 0.01;
+    </script>
+
     <div class="hearts-container"></div>
     <div class="heart-main">
       <div class="container">
@@ -20,32 +28,7 @@
     </div>
 
     <div class="gallery-container" style="display: none">
-      <div class="rhombus-gallery">
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/1/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/2/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/3/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/4/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/5/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/6/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/7/300/300" alt="gallery image" />
-        </div>
-        <div class="rhombus">
-          <img src="https://picsum.photos/seed/8/300/300" alt="gallery image" />
-        </div>
-      </div>
+      <div class="rhombus-gallery" id="gallery"></div>
     </div>
     <script src="script.js"></script>
   </body>

@@ -6,6 +6,64 @@ const container = document.querySelector('.container');
 const galleryContainer = document.querySelector('.gallery-container');
 const heartMain = document.querySelector('.heart-main');
 
+// List of your actual images
+const galleryImages = [
+    'img/my images/IMG20241222132547.jpg',
+    'img/my images/IMG20241222151626.jpg',
+    'img/my images/IMG20250103135718.jpg',
+    'img/my images/IMG20250103143050.jpg',
+    'img/my images/IMG20250213200101.jpg',
+    'img/my images/IMG20250217101549.jpg',
+    'img/my images/IMG20250218092951.jpg',
+    'img/my images/IMG20250218103410.jpg',
+    'img/my images/IMG20250218110814.jpg',
+    'img/my images/IMG20250222170453.jpg',
+    'img/my images/IMG20250223100437.jpg',
+    'img/my images/IMG20250223103558.jpg',
+    'img/my images/IMG20250309114323.jpg',
+    'img/my images/IMG20251020193255.jpg',
+    'img/my images/IMG20251023104002.jpg',
+    'img/my images/IMG20251231151916.jpg',
+    'img/my images/IMG20260110161401.jpg',
+    'img/my images/IMG20260110161444.jpg',
+    'img/my images/IMG_20241213_184543.jpg',
+    'img/my images/IMG_20250217_181950.jpg',
+    'img/my images/IMG_20250224_104606.jpg',
+    'img/my images/IMG_20250912_000629.jpg',
+    'img/my images/IMG_8062.JPG',
+    'img/my images/IMG_8063.JPG',
+    'img/my images/IMG_8066.JPG',
+    'img/my images/IMG_8068.JPG',
+    'img/my images/IMG_8070.JPG',
+    'img/my images/IMG_8074.JPG',
+    'img/my images/IMG_8075.JPG',
+    'img/my images/IMG_8077.JPG',
+    'img/my images/IMG_8079.JPG',
+    'img/my images/IMG_8083.JPG',
+    'img/my images/IMG_8088.JPG',
+    'img/my images/_DSC6786.JPG',
+    'img/my images/_DSC6921.JPG',
+    'img/my images/_DSC6943.JPG',
+    'img/my images/_DSC7023.JPG',
+    'img/my images/_DSC7047.JPG',
+    'img/my images/_DSC7054.JPG'
+];
+
+// Shuffle array using Fisher-Yates shuffle
+function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// Get a random image from the gallery
+function getRandomImage() {
+    return galleryImages[Math.floor(Math.random() * galleryImages.length)];
+}
+
 yesBtn.addEventListener('click', () => {
     // Update central text and image
     question.textContent = 'See you on 14th Feb';
@@ -25,13 +83,22 @@ yesBtn.addEventListener('click', () => {
     // Reveal and prepare the gallery behind the heart
     galleryContainer.style.display = 'block';
 
-    // Duplicate gallery items so the scroll is seamless (infinite)
-    const gallery = galleryContainer.querySelector('.rhombus-gallery');
+    // Populate gallery with images
+    const gallery = document.getElementById('gallery');
     if (gallery && !gallery.dataset.duplicated) {
-        // populate each image with a random source
-        const imgs = gallery.querySelectorAll('img');
-        imgs.forEach(img => {
-            img.src = randomPicsum(500);
+        // Get shuffled images
+        const shuffledImages = shuffleArray(galleryImages);
+        const selectedImages = shuffledImages.slice(0, 8); // Use first 8 images
+
+        // Create rhombus elements with images
+        selectedImages.forEach(imageSrc => {
+            const rhombus = document.createElement('div');
+            rhombus.classList.add('rhombus');
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.alt = 'gallery image';
+            rhombus.appendChild(img);
+            gallery.appendChild(rhombus);
         });
 
         // duplicate enough times to ensure long continuous strip
@@ -44,18 +111,17 @@ yesBtn.addEventListener('click', () => {
         row2.classList.add('row2');
         row2.dataset.duplicated = 'true';
         // randomize images in the second row so they aren't identical
+        const shuffledImages2 = shuffleArray(galleryImages);
         const imgs2 = row2.querySelectorAll('img');
-        imgs2.forEach(img => { img.src = randomPicsum(500); });
+        let imgIndex = 0;
+        imgs2.forEach(img => {
+            img.src = shuffledImages2[imgIndex % shuffledImages2.length];
+            imgIndex++;
+        });
 
         galleryContainer.appendChild(row2);
     }
 });
-
-// return a Picsum URL with a random seed — keeps images consistent per element but random overall
-function randomPicsum(size = 500) {
-    const seed = Math.random().toString(36).substring(2, 9);
-    return `https://picsum.photos/seed/${seed}/${size}/${size}`;
-}
 
 noBtn.addEventListener('mouseover', () => {
     // ensure the button is positioned relative to the viewport
@@ -110,4 +176,86 @@ function createHeart() {
 }
 
 setInterval(createHeart, 300);
+
+
+// Create many hearts and sparkles around the window edges to act as a frame
+function createFrameElements(heartCount = 80, sparkleCount = 60) {
+    let frame = document.getElementById('windowFrame');
+    if (!frame) {
+        frame = document.createElement('div');
+        frame.id = 'windowFrame';
+        frame.className = 'window-frame';
+        document.body.appendChild(frame);
+    }
+
+    frame.innerHTML = '';
+
+    // helper to place element near edges
+    function placeNearEdge(el, edge) {
+        const pad = 2; // percent padding from exact edge
+        if (edge === 'top') {
+            el.style.top = (Math.random() * 6 + 0) + '%';
+            el.style.left = (Math.random() * 100) + '%';
+        } else if (edge === 'bottom') {
+            el.style.bottom = (Math.random() * 6 + 0) + '%';
+            el.style.left = (Math.random() * 100) + '%';
+        } else if (edge === 'left') {
+            el.style.left = (Math.random() * 6 + 0) + '%';
+            el.style.top = (Math.random() * 100) + '%';
+        } else { // right
+            el.style.right = (Math.random() * 6 + 0) + '%';
+            el.style.top = (Math.random() * 100) + '%';
+        }
+    }
+
+    const edges = ['top', 'bottom', 'left', 'right'];
+
+    for (let i = 0; i < heartCount; i++) {
+        const h = document.createElement('div');
+        h.className = 'frame-heart';
+        const edge = edges[Math.floor(Math.random() * edges.length)];
+        placeNearEdge(h, edge);
+        // randomize size and animation
+        const size = 8 + Math.random() * 18;
+        h.style.width = size + 'px';
+        h.style.height = size + 'px';
+        h.style.animationDuration = 3 + Math.random() * 4 + 's';
+        frame.appendChild(h);
+    }
+
+    for (let i = 0; i < sparkleCount; i++) {
+        const s = document.createElement('div');
+        s.className = 'frame-sparkle';
+        const edge = edges[Math.floor(Math.random() * edges.length)];
+        placeNearEdge(s, edge);
+        const size = 3 + Math.random() * 6;
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.animationDuration = (1.2 + Math.random() * 2.2) + 's';
+        s.style.animationDelay = (Math.random() * 3) + 's';
+        frame.appendChild(s);
+    }
+}
+
+// Initialize frame elements and refresh occasionally
+createFrameElements();
+window.addEventListener('resize', () => {
+    // re-create to adapt to new size
+    createFrameElements(70 + Math.floor(Math.random() * 50), 50 + Math.floor(Math.random() * 40));
+});
+
+// Preload gallery images in background for instant display
+function preloadGalleryImages() {
+    galleryImages.forEach(imageSrc => {
+        const img = new Image();
+        img.src = imageSrc;
+    });
+}
+
+// Start preloading images on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', preloadGalleryImages);
+} else {
+    preloadGalleryImages();
+}
 
