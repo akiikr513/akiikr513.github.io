@@ -1,3 +1,20 @@
+const soundToggle = document.getElementById('soundToggle');
+const audio = document.getElementById('bgMusic');
+let isSoundOn = true;
+
+audio.volume = 0.01;
+
+soundToggle.addEventListener('click', () => {
+    isSoundOn = !isSoundOn;
+    if (isSoundOn) {
+        audio.volume = 0.01;
+        soundToggle.src = 'img/speaker_on.gif';
+    } else {
+        audio.volume = 0;
+        soundToggle.src = 'img/speaker_off.gif';
+    }
+});
+
 const yesBtn = document.querySelector('.yes-btn');
 const noBtn = document.querySelector('.no-btn');
 const question = document.querySelector('.question');
@@ -41,12 +58,12 @@ const galleryImages = [
     'img/my images/IMG_8079.JPG',
     'img/my images/IMG_8083.JPG',
     'img/my images/IMG_8088.JPG',
-    'img/my images/_DSC6786.JPG',
-    'img/my images/_DSC6921.JPG',
-    'img/my images/_DSC6943.JPG',
-    'img/my images/_DSC7023.JPG',
-    'img/my images/_DSC7047.JPG',
-    'img/my images/_DSC7054.JPG'
+    'img/my images/DSC6786.JPG',
+    'img/my images/DSC6921.JPG',
+    'img/my images/DSC6943.JPG',
+    'img/my images/DSC7023.JPG',
+    'img/my images/DSC7047.JPG',
+    'img/my images/DSC7054.JPG'
 ];
 
 // Shuffle array using Fisher-Yates shuffle

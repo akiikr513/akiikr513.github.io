@@ -3,17 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Be My Valentine</title>
+    <title>Be My Valentine Wifupie Ji</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>❤️</text></svg>"
+    />
   </head>
   <body>
+    <!-- Speaker toggle button -->
+    <img src="img/speaker_on.gif" id="soundToggle" class="sound-toggle" title="Toggle Sound" />
+
     <audio id="bgMusic" autoplay loop style="display: none">
       <source src="Song/ily (i love you baby).mp3" type="audio/mpeg" />
     </audio>
-    <script>
-      const audio = document.getElementById("bgMusic");
-      audio.volume = 0.01;
-    </script>
 
     <div class="hearts-container"></div>
     <div class="heart-main">
