@@ -1,4 +1,8 @@
 /* Clean, single-version CSS for the Valentine page */
+:root {
+    --rhombus-size: 550px;
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -98,18 +102,18 @@ body {
 .rhombus-gallery  { display: flex; width: max-content; animation: scroll var(--scroll-duration, 60s) linear infinite; align-items: center; position: absolute; left: 0; }
 /* place rows vertically: first row near top, second row lower */
 .rhombus-gallery {
-  top: calc(20% - 130px);
+  top: calc(18% - 130px);
   left: 0;
 }
 /* lower row shifted horizontally by half an item (item width + horizontal margin) to interlock */
 .rhombus-gallery.row2 {
   top: calc(60% - 260px);
-  left: calc((550px + 5px) / 2);
+  left: calc((var(--rhombus-size) + 5px) / 2);
 }
 
 .rhombus {
-  width: 550px;
-  height: 550px;
+  width: var(--rhombus-size);
+  height: var(--rhombus-size);
   margin: 2px 2px;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   overflow: hidden;
@@ -192,4 +196,65 @@ body {
   20% { opacity: 1; transform: scale(1); }
   60% { opacity: 0.7; transform: scale(0.8); }
   100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* Responsive Adjustments */
+
+/* iPad / Tablet (approx 11 inch and below) */
+@media (max-width: 900px) {
+    :root {
+        --rhombus-size: 400px;
+    }
+    .heart-main {
+        transform: scale(0.9);
+    }
+    .rhombus-gallery {
+        top: calc(20% - 100px);
+    }
+    .rhombus-gallery.row2 {
+        top: calc(60% - 200px);
+    }
+}
+
+/* Mobile (iPhone) */
+@media (max-width: 600px) {
+    :root {
+        --rhombus-size: 280px;
+    }
+    body {
+        border-width: 8px; /* Thinner frame on mobile */
+    }
+    .question {
+        font-size: 1.8em;
+    }
+    .gif {
+        height: 140px;
+    }
+    .center-image {
+        width: 140px;
+        height: 140px;
+    }
+    .heart-main {
+        transform: scale(0.65);
+    }
+    .rhombus-gallery {
+        top: calc(25% - 70px);
+    }
+    .rhombus-gallery.row2 {
+        top: calc(65% - 140px);
+    }
+    .heart-main::after {
+        left: -40px;
+        transform-origin: 100% 100%;
+        transform: scale(0.6) rotate(45deg);
+        z-index: 1;
+        top: 30%;
+    }
+    .heart-main::before {
+        left: 180px;
+        transform-origin: 0 100%;
+        transform: scale(0.6) rotate(-45deg);
+        z-index: 1;
+        top: 30%;
+    }
 }
